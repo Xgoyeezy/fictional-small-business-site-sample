@@ -1,4 +1,22 @@
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const priceLoader = document.querySelector(".price-loader");
+
+if (priceLoader) {
+  const hidePriceLoader = () => {
+    priceLoader.classList.add("is-hidden");
+    window.setTimeout(() => priceLoader.remove(), reduceMotion ? 0 : 380);
+  };
+
+  const schedulePriceLoader = () => {
+    window.setTimeout(hidePriceLoader, reduceMotion ? 0 : 1250);
+  };
+
+  if (document.readyState === "loading") {
+    window.addEventListener("DOMContentLoaded", schedulePriceLoader, { once: true });
+  } else {
+    window.requestAnimationFrame(schedulePriceLoader);
+  }
+}
 
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
   link.addEventListener("click", (event) => {
